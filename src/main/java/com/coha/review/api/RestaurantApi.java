@@ -1,10 +1,15 @@
 package com.coha.review.api;
 
 import com.coha.review.api.request.CreateAndEditRestaurantRequest;
+import com.coha.review.model.RestaurantEntity;
+import com.coha.review.service.RestaurantService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+@RequiredArgsConstructor
 @RestController
 public class RestaurantApi {
+    private final RestaurantService restaurantService;
 
     @GetMapping("/restaurants")
     public String getRestaurants() {
@@ -16,18 +21,17 @@ public class RestaurantApi {
     }
 
     @PostMapping("/restaurant")
-    public String createRestaurant(@RequestBody CreateAndEditRestaurantRequest request) {
-        return "This is createRestaurant, name = " + request.getName() + " address = " + request.getAddress()
-                + ", menu[0].name = " + request.getMenus().get(0).getName() + ", menu[0].price = " + request.getMenus().get(0).getPrice();
+    public void createRestaurant(@RequestBody CreateAndEditRestaurantRequest request) {
+        restaurantService.createRestaurant(request);
     }
 
     @PutMapping("/restaurant/{restaurantId}")
-    public String editRestaurant(@PathVariable Long restaurantId, @RequestBody CreateAndEditRestaurantRequest request) {
-        return "This is editRestaurant, " + restaurantId + "name = " + request.getName() + " address = " + request.getAddress();
+    public void editRestaurant(@PathVariable Long restaurantId, @RequestBody CreateAndEditRestaurantRequest request) {
+        restaurantService.editRestaurant(restaurantId, request);
     }
 
     @DeleteMapping("/restaurant/{restaurantId}")
-    public String deleteRestaurant(@PathVariable Long restaurantId) {
-        return "This is deleteRestaurant, " + restaurantId;
+    public void deleteRestaurant(@PathVariable Long restaurantId) {
+        restaurantService.deleteRestaurant(restaurantId);
     }
 }
