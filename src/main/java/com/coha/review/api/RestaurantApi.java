@@ -1,10 +1,15 @@
 package com.coha.review.api;
 
 import com.coha.review.api.request.CreateAndEditRestaurantRequest;
+import com.coha.review.api.response.RestaurantDetailView;
+import com.coha.review.api.response.RestaurantView;
 import com.coha.review.model.RestaurantEntity;
 import com.coha.review.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.ZonedDateTime;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -12,12 +17,12 @@ public class RestaurantApi {
     private final RestaurantService restaurantService;
 
     @GetMapping("/restaurants")
-    public String getRestaurants() {
-        return "This is getRestaurants";
+    public List<RestaurantView> getRestaurants() {
+        return restaurantService.getAllRestaurants();
     }
     @GetMapping("/restaurant/{restaurantID}")
-    public String getRestaurant(@PathVariable Long restaurantID) {
-        return "This is getRestaurant, " + restaurantID;
+    public RestaurantDetailView getRestaurant(@PathVariable Long restaurantID) {
+        return restaurantService.getRestaurantDetail(restaurantID);
     }
 
     @PostMapping("/restaurant")
